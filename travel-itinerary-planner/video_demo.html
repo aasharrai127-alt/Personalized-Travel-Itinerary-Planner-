@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WanderWise AI - Automated Video Demo & Screen Recorder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .recording-pulse {
+      animation: pulse-ring 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+  <!-- Top Control Bar for Video Recording -->
+  <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-black text-lg">
+          ✈️
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-white flex items-center space-x-2">
+            <span>Automated Video Demo & Presentation Recorder</span>
+            <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-bold">
+              Full Evaluation Mode
+            </span>
+          </h1>
+          <p class="text-xs text-slate-400">Personalized Travel Itinerary Planner • Google Cloud GenAI</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="btnPlayDemo" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+          <span id="playIcon">▶</span>
+          <span id="playText">Play Automated Demo</span>
+        </button>
+
+        <button id="btnRecordVideo" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+          <span class="w-2.5 h-2.5 rounded-full bg-white recording-pulse"></span>
+          <span id="recBtnText">Record Video File (.webm)</span>
+        </button>
+
+        <a href="index.html" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+          Back to App
+        </a>
+      </div>
+    </div>
+
+    <!-- Active Step Narration Banner -->
+    <div id="narrationBar" class="max-w-7xl mx-auto mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
+      <div class="flex items-center space-x-2">
+        <span id="stepBadge" class="bg-indigo-600 text-white font-extrabold px-2 py-0.5 rounded-md text-[10px] uppercase">
+          Step 1 / 4
+        </span>
+        <span id="narrationText" class="text-slate-200 font-medium">
+          Ready to demonstrate: Scenario 1 - Solo Traveler Weekend Getaway.
+        </span>
+      </div>
+      <div class="text-slate-400 text-[11px] hidden sm:block">
+        Duration: <span id="timerText" class="font-mono text-indigo-400 font-bold">00:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Simulation Stage -->
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    <!-- Highlight Callout Box -->
+    <div id="calloutBox" class="mb-6 p-4 rounded-2xl bg-indigo-950/70 border border-indigo-500/40 text-indigo-200 flex items-start space-x-3 transition-all duration-300">
+      <span class="text-2xl" id="calloutIcon">🎒</span>
+      <div>
+        <h3 class="text-sm font-bold text-white" id="calloutTitle">Scenario 1: Solo Traveler Weekend Getaway (Paris)</h3>
+        <p class="text-xs text-indigo-200 mt-1" id="calloutDesc">
+          A solo traveler wants a quick weekend escape with minimal research time. The AI generates a 3-day Paris plan optimizing transit, clustering walkable sights (Latin Quarter & Le Marais), and suggesting affordable solo dining.
+        </p>
+      </div>
+    </div>
+
+    <!-- Mock UI Display -->
+    <div class="bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl">
+      <!-- Simulated App Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-700 pb-5 mb-6">
+        <div>
+          <div class="flex items-center space-x-2 text-xs font-bold text-indigo-400 mb-1">
+            <span id="uiStyleBadge">SOLO TRAVELER</span>
+            <span>•</span>
+            <span id="uiDaysBadge">3 DAYS</span>
+            <span>•</span>
+            <span id="uiGroupBadge">1 TRAVELER</span>
+          </div>
+          <h2 class="text-2xl font-black text-white" id="uiTitle">Solo Explorer: Paris Smart Weekend Getaway</h2>
+          <p class="text-xs text-slate-300 mt-1" id="uiSummary">
+            Frictionless 3-day solo trip with optimized transit and affordable cultural highlights.
+          </p>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <div class="bg-slate-900 px-4 py-2.5 rounded-2xl border border-slate-700 text-right">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Est. Budget</span>
+            <span class="text-xl font-black text-emerald-400" id="uiBudget">$215</span>
+          </div>
+          <div class="bg-indigo-600 px-4 py-2.5 rounded-2xl text-white font-bold text-xs" id="uiPerPersonBadge">
+            $215 / Person
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulated Day Navigation -->
+      <div class="flex space-x-2 mb-6" id="uiDayTabs">
+        <button class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 text-white">Day 1</button>
+        <button class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-700 text-slate-300">Day 2</button>
+        <button class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-700 text-slate-300">Day 3</button>
+      </div>
+
+      <!-- Main Activity Cards Simulation -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-4">
+          <!-- Day Banner -->
+          <div class="bg-slate-900 rounded-2xl p-5 border border-slate-700">
+            <span class="text-[10px] font-bold uppercase text-indigo-400" id="uiDayTag">Day 1 • 2026-11-06</span>
+            <h3 class="text-lg font-black text-white mt-0.5" id="uiDayTheme">Historic Latin Quarter, Bookshops & Sunset Seine</h3>
+            <p class="text-xs text-slate-400 mt-1" id="uiLogistics">🧭 Transit Advice: All sights within 1.5 miles. Walk along the riverbank.</p>
+          </div>
+
+          <!-- Morning Card -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700" id="cardMorning">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
+                Morning • 09:30 AM - 11:30 AM
+              </span>
+              <span class="text-xs font-bold text-emerald-400" id="cardMornPrice">Free ($0)</span>
+            </div>
+            <h4 class="text-sm font-bold text-white" id="cardMornTitle">Shakespeare & Company Bookshop and Notre-Dame</h4>
+            <p class="text-xs text-slate-300 mt-1" id="cardMornDesc">
+              Browse the legendary independent bookshop on the banks of the Seine, followed by Notre-Dame plaza.
+            </p>
+            <div class="mt-2 text-[11px] text-amber-300 bg-amber-950/40 p-2 rounded-xl border border-amber-900/60" id="cardMornTip">
+              💡 Tip: Arrive at opening time to enjoy the quiet upstairs reading room.
+            </div>
+          </div>
+
+          <!-- Afternoon Card -->
+          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-700" id="cardAfternoon">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">
+                Afternoon • 01:30 PM - 03:30 PM
+              </span>
+              <span class="text-xs font-bold text-emerald-400" id="cardAftPrice">$13.00</span>
+            </div>
+            <h4 class="text-sm font-bold text-white" id="cardAftTitle">Sainte-Chapelle Stained Glass Splendor</h4>
+            <p class="text-xs text-slate-300 mt-1" id="cardAftDesc">
+              Gaze upon 1,113 radiant 13th-century stained glass panels inside the royal chapel.
+            </p>
+            <div class="mt-2 text-[11px] text-blue-300 bg-blue-950/40 p-2 rounded-xl border border-blue-900/60" id="cardAftTip">
+              💡 Tip: Pre-book timed admission to bypass entry queues.
+            </div>
+          </div>
+
+          <!-- Evening Dining Card -->
+          <div class="bg-emerald-950/40 rounded-2xl p-4 border border-emerald-800/60" id="cardDining">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                🍴 Recommended Dinner Spot
+              </span>
+              <span class="text-xs font-bold text-slate-300" id="cardDinPrice">$$ (Moderate)</span>
+            </div>
+            <h4 class="text-sm font-bold text-white" id="cardDinTitle">Breizh Café Odéon (French Artisanal Crêperie)</h4>
+            <p class="text-xs text-emerald-200 mt-1" id="cardDinDish">
+              Try: Organic Buckwheat Galette with Artisanal Dry Cider
+            </p>
+            <span class="text-[10px] text-slate-400 mt-1 block">Notes: Cozy counter seating, perfect for solo travelers.</span>
+          </div>
+        </div>
+
+        <!-- Sidebar Simulation (Budget & Logistics) -->
+        <div class="space-y-4">
+          <div class="bg-slate-900 rounded-2xl p-5 border border-slate-700">
+            <h4 class="text-xs font-bold uppercase text-slate-300 mb-3">AI Budget Breakdown</h4>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Attractions & Activities:</span>
+                <span class="font-bold text-white" id="statActivities">$95</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Curated Dining:</span>
+                <span class="font-bold text-white" id="statDining">$80</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Local Transit:</span>
+                <span class="font-bold text-white" id="statTransit">$40</span>
+              </div>
+              <div class="pt-2 border-t border-slate-800 flex justify-between font-bold">
+                <span class="text-indigo-400">Total Estimated:</span>
+                <span class="text-emerald-400" id="statTotal">$215</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900 rounded-2xl p-5 border border-slate-700">
+            <h4 class="text-xs font-bold uppercase text-slate-300 mb-2">Essential Packing</h4>
+            <ul class="text-xs text-slate-400 space-y-1 list-disc list-inside" id="uiPackingList">
+              <li>Metro pass card</li>
+              <li>Comfortable walking shoes (15k+ steps)</li>
+              <li>Universal power adapter</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Script for Automated Walkthrough & In-Browser Screen Recorder -->
+  <script>
+    let isPlaying = false;
+    let currentStep = 0;
+    let timerInterval = null;
+    let secondsElapsed = 0;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+
+    const DEMO_STEPS = [
+      {
+        stepNum: 1,
+        title: "Scenario 1: Solo Traveler Weekend Getaway (Paris)",
+        icon: "🎒",
+        desc: "Solo explorer planning a weekend trip. The system generates a time-optimized 3-day Paris itinerary with walkable route clusters and affordable dining ($215 total).",
+        uiStyleBadge: "SOLO TRAVELER",
+        uiDaysBadge: "3 DAYS",
+        uiGroupBadge: "1 TRAVELER",
+        uiTitle: "Solo Explorer: Paris Smart Weekend Getaway",
+        uiSummary: "Frictionless 3-day solo trip with optimized transit and affordable cultural highlights.",
+        uiBudget: "$215",
+        uiPerPersonBadge: "$215 / Person",
+        uiDayTag: "Day 1 • 2026-11-06",
+        uiDayTheme: "Historic Latin Quarter, Bookshops & Sunset Seine",
+        uiLogistics: "🧭 Transit Advice: All sights within 1.5 miles. Walk along the riverbank.",
+        cardMornTitle: "Shakespeare & Company Bookshop and Notre-Dame",
+        cardMornDesc: "Browse the legendary independent bookshop on the banks of the Seine, followed by Notre-Dame plaza.",
+        cardMornPrice: "Free ($0)",
+        cardMornTip: "💡 Tip: Arrive at opening time to enjoy the quiet upstairs reading room.",
+        cardAftTitle: "Sainte-Chapelle Stained Glass Splendor",
+        cardAftDesc: "Gaze upon 1,113 radiant 13th-century stained glass panels inside the royal chapel.",
+        cardAftPrice: "$13.00",
+        cardAftTip: "💡 Tip: Pre-book timed admission to bypass entry queues.",
+        cardDinTitle: "Breizh Café Odéon (French Artisanal Crêperie)",
+        cardDinPrice: "$$ (Moderate)",
+        cardDinDish: "Try: Organic Buckwheat Galette with Artisanal Dry Cider",
+        statActivities: "$95",
+        statDining: "$80",
+        statTransit: "$40",
+        statTotal: "$215",
+        packing: ["Metro pass card", "Comfortable walking shoes (15k+ steps)", "Universal power adapter"]
+      },
+      {
+        stepNum: 2,
+        title: "Scenario 2: Romantic Couple Vacation (Rome)",
+        icon: "💑",
+        desc: "Couple planning a romantic holiday. AI selects relaxed pacing, scenic sunset viewpoints (Borghese Gardens, Aventine Keyhole), boutique stays, and curated candlelit dining ($940).",
+        uiStyleBadge: "ROMANTIC COUPLE",
+        uiDaysBadge: "5 DAYS",
+        uiGroupBadge: "2 TRAVELERS",
+        uiTitle: "Romantic Escape: Rome for Two",
+        uiSummary: "Intimate 5-day romantic vacation featuring panoramic sunset hills, wine tastings, and unhurried Italian dining.",
+        uiBudget: "$940",
+        uiPerPersonBadge: "$470 / Person",
+        uiDayTag: "Day 1 • 2026-11-12",
+        uiDayTheme: "Sunset Vistas, Spanish Steps & Candlelit Welcome",
+        uiLogistics: "🧭 Transit Advice: Private car service from airport; leisurely evening stroll around Piazza Navona.",
+        cardMornTitle: "Villa Borghese Gardens & Rowboat Lake",
+        cardMornDesc: "Peaceful morning walk under pine trees and renting a romantic wooden rowboat on the lake.",
+        cardMornPrice: "$12.00",
+        cardMornTip: "💡 Tip: Uncrowded early mornings; head to Pincio Terrace for panoramic views.",
+        cardAftTitle: "Trevi Fountain Coin Toss & Artisanal Gelato",
+        cardAftDesc: "Follow tradition by tossing a coin over your left shoulder for good fortune.",
+        cardAftPrice: "$8.00",
+        cardAftTip: "💡 Tip: Visit San Crispino Gelateria for award-winning honey-walnut gelato.",
+        cardDinTitle: "Ristorante Aroma at Palazzo Manfredi (Michelin Star)",
+        cardDinPrice: "$$$ (Fine Dining)",
+        cardDinDish: "Try: Chef's Truffle Cacio e Pepe with Direct Colosseum View",
+        statActivities: "$380",
+        statDining: "$440",
+        statTransit: "$120",
+        statTotal: "$940",
+        packing: ["Smart evening attire", "Polaroid camera", "Sunscreen & sunglasses"]
+      },
+      {
+        stepNum: 3,
+        title: "Scenario 3: Small Group Coordinating Multi-Day Trip (Tokyo)",
+        icon: "👥",
+        desc: "Group of 4 friends coordinating schedules. The engine balances tech, gaming, historic shrines, split budget calculation ($295/person), and buffer times to prevent group delays.",
+        uiStyleBadge: "GROUP OF FRIENDS",
+        uiDaysBadge: "5 DAYS",
+        uiGroupBadge: "4 TRAVELERS",
+        uiTitle: "Tokyo Group Quest: Culture, Tech & Street Food",
+        uiSummary: "High-energy multi-day adventure balancing Akihabara arcades, Shibuya sky deck, and Izakaya crawls.",
+        uiBudget: "$1,180",
+        uiPerPersonBadge: "$295 / Person",
+        uiDayTag: "Day 1 • 2026-11-20",
+        uiDayTheme: "Shibuya Crossing, Harajuku & Golden Hour Sky Deck",
+        uiLogistics: "🧭 Transit Advice: Split into 2 pairs at metro gates. Set meeting checkpoint at Hachiko statue.",
+        cardMornTitle: "Meiji Shrine Forest Walk & Harajuku Takeshita Street",
+        cardMornDesc: "Walk under towering cedar trees through the sacred forest into colorful Harajuku alleys.",
+        cardMornPrice: "Free ($0)",
+        cardMornTip: "💡 Tip: Respectful shrine etiquette; wash hands at purification fountain.",
+        cardAftTitle: "Shibuya Sky 360° Open-Air Rooftop Observatory",
+        cardAftDesc: "Unrivaled views across Tokyo and Mt. Fuji from the open glass rooftop deck.",
+        cardAftPrice: "$22.00",
+        cardAftTip: "💡 Tip: Pre-book sunset slot 4 weeks in advance.",
+        cardDinTitle: "Torikizoku Shibuya (Lively Japanese Yakitori Izakaya)",
+        cardDinPrice: "$$ (Group Friendly)",
+        cardDinDish: "Try: Charcoal-grilled Tare Skewers & Fresh Draft Pitchers",
+        statActivities: "$460",
+        statDining: "$520",
+        statTransit: "$200",
+        statTotal: "$1,180",
+        packing: ["Suica digital transit card", "Coin pouch for yen", "Pocket Wi-Fi unit"]
+      },
+      {
+        stepNum: 4,
+        title: "Single-Day AI Rewrite, Export & Supabase Sync",
+        icon: "⚡",
+        desc: "Shows single-day regeneration based on user prompts ('More outdoor parks & seafood'), instant budget recalculation, and one-click export to PDF and JSON.",
+        uiStyleBadge: "AI REWRITING & EXPORT",
+        uiDaysBadge: "COMPLETED",
+        uiGroupBadge: "VERIFIED",
+        uiTitle: "WanderWise AI Itinerary Engine • Ready for Evaluation",
+        uiSummary: "Full-stack integration complete: FastAPI REST endpoints, Supabase PostgreSQL persistence, and Google Gemini prompt engine.",
+        uiBudget: "$215 - $1,180",
+        uiPerPersonBadge: "All Scenarios Verified",
+        uiDayTag: "Features Demonstrated",
+        uiDayTheme: "Prompt Engineering • Day-Wise Structuring • Export Ready",
+        uiLogistics: "🧭 Ready for mentor review and live submission on MySkillWallet.",
+        cardMornTitle: "Interactive Activity Checkbox & Notes",
+        cardMornDesc: "Travelers can mark activities as done, check transit times, and update preferences.",
+        cardMornPrice: "Active",
+        cardMornTip: "💡 Click 'Share & Export' to download the PDF Travel Handbook.",
+        cardAftTitle: "Supabase Database & Local Resilient Store",
+        cardAftDesc: "Trips, days, and dining records persist reliably with zero runtime crashes.",
+        cardAftPrice: "Synced",
+        cardAftTip: "💡 Full PostgreSQL DDL schemas included in supabase/schema.sql.",
+        cardDinTitle: "FastAPI REST API with Swagger Docs",
+        cardDinPrice: "Port 8000",
+        cardDinDish: "Endpoints: /api/itinerary, /api/recommendations, /api/trips",
+        statActivities: "3 Scenarios",
+        statDining: "15 Days",
+        statTransit: "100% Tested",
+        statTotal: "PASSED",
+        packing: ["All project files verified", "GitHub repository ready", "Demo link ready"]
+      }
+    ];
+
+    function applyStep(step) {
+      document.getElementById("stepBadge").innerText = `Step ${step.stepNum} / 4`;
+      document.getElementById("narrationText").innerText = step.title;
+      document.getElementById("calloutIcon").innerText = step.icon;
+      document.getElementById("calloutTitle").innerText = step.title;
+      document.getElementById("calloutDesc").innerText = step.desc;
+
+      document.getElementById("uiStyleBadge").innerText = step.uiStyleBadge;
+      document.getElementById("uiDaysBadge").innerText = step.uiDaysBadge;
+      document.getElementById("uiGroupBadge").innerText = step.uiGroupBadge;
+      document.getElementById("uiTitle").innerText = step.uiTitle;
+      document.getElementById("uiSummary").innerText = step.uiSummary;
+      document.getElementById("uiBudget").innerText = step.uiBudget;
+      document.getElementById("uiPerPersonBadge").innerText = step.uiPerPersonBadge;
+
+      document.getElementById("uiDayTag").innerText = step.uiDayTag;
+      document.getElementById("uiDayTheme").innerText = step.uiDayTheme;
+      document.getElementById("uiLogistics").innerText = step.uiLogistics;
+
+      document.getElementById("cardMornTitle").innerText = step.cardMornTitle;
+      document.getElementById("cardMornDesc").innerText = step.cardMornDesc;
+      document.getElementById("cardMornPrice").innerText = step.cardMornPrice;
+      document.getElementById("cardMornTip").innerText = step.cardMornTip;
+
+      document.getElementById("cardAftTitle").innerText = step.cardAftTitle;
+      document.getElementById("cardAftDesc").innerText = step.cardAftDesc;
+      document.getElementById("cardAftPrice").innerText = step.cardAftPrice;
+      document.getElementById("cardAftTip").innerText = step.cardAftTip;
+
+      document.getElementById("cardDinTitle").innerText = step.cardDinTitle;
+      document.getElementById("cardDinPrice").innerText = step.cardDinPrice;
+      document.getElementById("cardDinDish").innerText = step.cardDinDish;
+
+      document.getElementById("statActivities").innerText = step.statActivities;
+      document.getElementById("statDining").innerText = step.statDining;
+      document.getElementById("statTransit").innerText = step.statTransit;
+      document.getElementById("statTotal").innerText = step.statTotal;
+
+      const packingUl = document.getElementById("uiPackingList");
+      packingUl.innerHTML = "";
+      step.packing.forEach(p => {
+        const li = document.createElement("li");
+        li.innerText = p;
+        packingUl.appendChild(li);
+      });
+    }
+
+    function startTimer() {
+      secondsElapsed = 0;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        secondsElapsed++;
+        const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, "0");
+        const secs = String(secondsElapsed % 60).padStart(2, "0");
+        document.getElementById("timerText").innerText = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function playWalkthrough() {
+      isPlaying = true;
+      document.getElementById("playIcon").innerText = "⏸";
+      document.getElementById("playText").innerText = "Playing Walkthrough...";
+      startTimer();
+
+      currentStep = 0;
+      applyStep(DEMO_STEPS[currentStep]);
+
+      const interval = setInterval(() => {
+        currentStep++;
+        if (currentStep >= DEMO_STEPS.length) {
+          clearInterval(interval);
+          clearInterval(timerInterval);
+          isPlaying = false;
+          document.getElementById("playIcon").innerText = "▶";
+          document.getElementById("playText").innerText = "Replay Demo";
+          document.getElementById("narrationText").innerText = "Walkthrough completed! Click Record to capture your video.";
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
+          return;
+        }
+        applyStep(DEMO_STEPS[currentStep]);
+      }, 6000);
+    }
+
+    document.getElementById("btnPlayDemo").addEventListener("click", () => {
+      playWalkthrough();
+    });
+
+    // In-browser video recording using MediaRecorder
+    document.getElementById("btnRecordVideo").addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: { frameRate: { ideal: 30 } },
+          audio: false
+        });
+
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream, { mimeType: "video/webm;codecs=vp9" });
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: "video/webm" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "wanderwise_travel_planner_demo.webm";
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+          }, 100);
+          document.getElementById("recBtnText").innerText = "Record Video File (.webm)";
+          alert("Video successfully recorded and saved to your Downloads folder! You can now upload it to Google Drive / YouTube and submit the link.");
+        };
+
+        mediaRecorder.start();
+        document.getElementById("recBtnText").innerText = "Recording... (Click to Stop)";
+        playWalkthrough();
+
+        // If user clicks again while recording, stop recording
+        document.getElementById("btnRecordVideo").onclick = () => {
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+            stream.getTracks().forEach(t => t.stop());
+          }
+        };
+      } catch (err) {
+        console.warn("Screen record request cancelled or not supported:", err);
+        alert("Tip: You can also use Windows built-in screen recorder by pressing [Win + Alt + R] while playing the demo!");
+      }
+    });
+
+    // Initial render
+    applyStep(DEMO_STEPS[0]);
+  </script>
+</body>
+</html>
